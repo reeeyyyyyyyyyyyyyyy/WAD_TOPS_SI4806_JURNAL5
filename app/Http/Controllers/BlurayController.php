@@ -78,9 +78,9 @@ class BlurayController extends Controller
     {
         // Request body berisi title, director dan year
         $validator = Validator::make($request->all(), [
-            'title' => 'sometimes|required|string|max:255',
-            'director' => 'sometimes|required|string',
-            'year' => 'sometimes|required|year',
+            'title' => 'required',
+            'director' => 'required',
+            'year' => 'required',
         ]);
 
         // Cari data bluray berdasarkan ID
