@@ -15,6 +15,9 @@ class Cassette extends Model
      */
     protected $table = 'cassettes';
     protected $fillable = [
+        'title',
+        'artist',
+        'year',
 
     ];
 }

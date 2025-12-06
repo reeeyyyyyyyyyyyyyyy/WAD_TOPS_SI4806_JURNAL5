@@ -17,11 +17,12 @@ class CassetteController extends Controller
     {
         // ambil semua data cassette
         // $cassettes = ....
-
+        $cassettes = Cassette::all();
         // return koleksi cassette
         // return ....
+        return CassetteResource::collection($cassettes);
     }
-
+     
     /**
      * ===========2================
      * Buat fungsi store untuk menambahkan data cassette baru
@@ -30,21 +31,26 @@ class CassetteController extends Controller
     {
         // Request body berisi title, artist dan year
         $validator = Validator::make($request->all(), [
+            'title'  => 'required|string',
+            'artist' => 'required|string',
+            'year'   => 'required|integer'
             
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                // 'success' => false,
-                // 'errors' => ....
+                'success' => false,
+                'errors'  => $validator->errors()
             ], 422);
         }
 
         // Buat data cassette
         // $cassette = ....
+        $cassette = Cassette::create($request->only(['title', 'artist', 'year']));
 
         // return cassette yang dibuat sebagai resource
         // return ....
+        return new CassetteResource($cassette);
 
     }
 
@@ -56,16 +62,18 @@ class CassetteController extends Controller
     {
         // Cari data cassette berdasarkan ID
         // $cassette = ....
+        $cassette = cassette::find($id);
 
         if (!$cassette) {
             return response()->json([
-                // 'success' => false,
-                // 'message' => ....
+                'success' => false,
+                'message' => 'Cassette not found'
             ], 404);
         }
 
         // return cassette sebagai resource
         // return ....
+        return new CassetteResource($cassette);
     }
 
     /**
@@ -74,56 +82,55 @@ class CassetteController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Request body berisi title, artist dan year
         $validator = Validator::make($request->all(), [
-            
+            'title'  => 'required',
+            'artist' => 'required',
+            'year'   => 'required'
         ]);
 
-        // Cari data cassette berdasarkan ID
-        // $cassette = ....
+        $cassette = Cassette::find($id);
 
         if (!$cassette) {
             return response()->json([
-                // 'success' => false,
-                // 'message' => ....
+                'success' => false,
+                'message' => 'Cassette not found'
             ], 404);
         }
 
 
         if ($validator->fails()) {
             return response()->json([
-                // 'success' => false,
-                // 'errors' => ....
+                'success' => false,
+                'errors'  => $validator->errors()
             ], 422);
         }
 
-        // Update data cassette
-        // $cassette->....
+        $cassette->update($request->only(['title', 'artist', 'year']));
 
-        // return cassette yang diupdate sebagai resource
-        // return ....
+        return new CassetteResource($cassette);
     }
 
+  
     /**
      * ===========5================
      * Buat fungsi destroy untuk menghapus data cassette
      */
     public function destroy(string $id)
     {
-        // Cari data cassette berdasarkan ID
-        // $cassette = ....
+        $cassette = Cassette::find($id);
 
         if (!$cassette) {
             return response()->json([
-                // 'success' => false,
-                // 'message' => ....
+                'success' => false,
+                'message' => 'Cassette not found'
             ], 404);
         }
+       
+        $cassette->delete();
 
-        // Hapus data cassette
-        // $cassette->....
-
-        // return message sukses
-        // return ....
+        return response()->json([
+            'success' => true,
+            'message' => 'Cassette deleted successfully'
+        ]);
     }
 }
