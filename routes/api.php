@@ -16,6 +16,8 @@ use App\Http\Controllers\AuthController;
  * unprotected routes for user registration and login
  */
 
+Route::apiResource('vhs', VhsController::class);
+
 
 
 Route::middleware('auth:sanctum')->group(function () {
