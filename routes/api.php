@@ -15,6 +15,7 @@ use App\Http\Controllers\AuthController;
  * =============1================
  * unprotected routes for user registration and login
  */
+Route::apiResource('cassette', CassetteController::class);
 
 
 
