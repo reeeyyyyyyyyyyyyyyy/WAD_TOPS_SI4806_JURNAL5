@@ -16,9 +16,15 @@ return new class extends Migration
          * Define the table name and its attributes/columns and their data types
          * id, title, director, year, timestamps
          */
-        Schema::create('dvds', function (Blueprint $table) {
-
+         Schema::create('dvds', function (Blueprint $table) {
+        $table->id();
+        $table->string('title');
+        $table->string('director');
+        $table->year('year');
+        $table->timestamps();
         });
+        
+       
     }
 
     /**

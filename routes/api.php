@@ -15,8 +15,7 @@ use App\Http\Controllers\AuthController;
  * =============1================
  * unprotected routes for user registration and login
  */
-
-
+Route::apiResource('dvds', DvdController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
     /**

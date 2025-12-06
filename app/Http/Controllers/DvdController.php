@@ -16,10 +16,10 @@ class DvdController extends Controller
     public function index()
     {
         // ambil semua data dvd
-        // $dvds = ....
+        $dvds = Dvd::all();
 
         // return koleksi dvd
-        // return ....
+        return DvdResource::collection($dvds);
     }
 
     /**
@@ -30,21 +30,31 @@ class DvdController extends Controller
     {
         // Request body berisi title, director dan year
         $validator = Validator::make($request->all(), [
+            'title ' => 'nullable',
+            'director' => 'required',
+            'year' => 'required',
+
+
+
             
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                // 'success' => false,
-                // 'errors' => ....
+             'message' => 'Please check your request',
+             'errors' => $validator->errors()
             ], 422);
         }
 
         // Buat data dvd
-        // $dvd = ....
+         $dvd = Dvd::create($validator->validated());
+
 
         // return dvd yang dibuat sebagai resource
-        // return ....
+         return (new DvdResource($dvd))
+            ->additional(['message' => 'Dvd Berhasil Dibuat'])
+            ->response()
+            ->setStatusCode(201);
 
     }
 
@@ -52,78 +62,78 @@ class DvdController extends Controller
      * ===========3================
      * Buat fungsi show untuk menampilkan satu data dvd berdasarkan ID
      */
-    public function show(string $id)
+    public function show(string $dvd)
     {
         // Cari data dvd berdasarkan ID
-        // $dvd = ....
+         $dvd = Dvd::find($dvd);
 
         if (!$dvd) {
-            return response()->json([
-                // 'success' => false,
-                // 'message' => ....
-            ], 404);
+            return response()->json(['message' => 'item not found'], 404);
         }
 
         // return dvd sebagai resource
-        // return ....
+         return new DvdResource($dvd);
     }
 
     /**
      * ===========4================
      * Buat fungsi update untuk mengubah data dvd yang ada
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $dvd)
     {
         // Request body berisi title, director dan year
         $validator = Validator::make($request->all(), [
-            
+           'title ' => 'required5',
+            'director' => 'required',
+            'year' => 'required'
+
         ]);
 
         // Cari data dvd berdasarkan ID
-        // $dvd = ....
+         $dvd =  Dvd::find($dvd);
 
         if (!$dvd) {
             return response()->json([
-                // 'success' => false,
-                // 'message' => ....
+               'message' => 'item not found'
             ], 404);
         }
 
 
         if ($validator->fails()) {
             return response()->json([
-                // 'success' => false,
-                // 'errors' => ....
+              'message' => 'Please check your request',
+             'errors' => $validator->errors()
             ], 422);
         }
 
         // Update data dvd
-        // $dvd->....
-
+        $dvd->  update($validator->validated());
         // return dvd yang diupdate sebagai resource
-        // return ....
+        return (new  DvdResource($dvd))
+            ->additional(['message' => 'Dvd Berhasil Dibuat'])
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
      * ===========5================
      * Buat fungsi destroy untuk menghapus data dvd
      */
-    public function destroy(string $id)
+    public function destroy(string $dvd)
     {
         // Cari data dvd berdasarkan ID
-        // $dvd = ....
+        $dvd = Dvd::find($dvd);
 
         if (!$dvd) {
             return response()->json([
-                // 'success' => false,
-                // 'message' => ....
+                'message' => 'Item Not Found'
             ], 404);
         }
 
         // Hapus data dvd
-        // $dvd->....
+         $dvd->delete();
 
         // return message sukses
-        // return ....
+         return response()->json(['Message'=>'item deleted successfully'], 200);
     }
 }
