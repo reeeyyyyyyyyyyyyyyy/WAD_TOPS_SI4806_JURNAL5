@@ -17,6 +17,11 @@ return new class extends Migration
          * id, title, director, year, timestamps
          */
         Schema::create('blurays', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('director');
+            $table->year('year');
+            $table->timestamps();
 
         });
     }
