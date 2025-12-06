@@ -13,8 +13,12 @@ class DvdAudio extends Model
      * Define the table name and its attributes/columns
      * the attributes are title, artist, year
      */
+    
     protected $table = 'dvdaudios';
     protected $fillable = [
+        'title',
+        'artist',
+        'year',
 
     ];
 
